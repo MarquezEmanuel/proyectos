@@ -28,6 +28,20 @@
   left join (select base, count(id) tablas from [dbo].[bas_tabla] group by base) tab on tab.base = bas.id
   left join (select base, count(id) vistas from [dbo].[bas_vista] group by base) vis on vis.base = bas.id
   left join (select base, count(id) sps from [dbo].[bas_procedimiento] group by base) pro on pro.base = bas.id
+
+
+  create view vwbas_tabla as
+  select 
+  tab.id tid,
+  tab.nombre tnombre,
+  bas.id bid,
+  bas.nombre bnombre,
+  tab.fechaCreacion tfechaCreacion,
+  tab.fechaEdicion tfechaEdicion,
+  tab.descripcion tdescripcion,
+  tab.fechaProceso tfechaProceso
+  from cap.dbo.bas_tabla tab
+  inner join cap.dbo.bas_base bas on bas.id = tab.base
   
   
   
