@@ -81,4 +81,6 @@ insert into cap.[dbo].[ser_servidor] values
 ('192.168.172.51','VM172DB51','Test','Base de datos','SQL Server 2008 R2 Standar x64',0,0,'Activo'),
 ('192.168.172.54','TESTBASES4','Test','Base de datos','SQL Server 2005 Estandar',0,0,'Activo'),
 ('192.168.172.55','TESTBASES5','Test','Base de datos','SQL Server 2005 Estandar',0,0,'Activo'),
-('192.168.172.6','APLICATEST02','Test','Base de datos','SQL Server',0,0,'Activo'),
+('192.168.172.6','APLICATEST02','Test','Base de datos','SQL Server',0,0,'Activo')
+
+update cap.[dbo].[ser_servidor] set spjob = 0, spbd = 0
