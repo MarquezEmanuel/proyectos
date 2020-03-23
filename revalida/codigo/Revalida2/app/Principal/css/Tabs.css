@@ -1,0 +1,236 @@
+
+ 
+#fuente {
+  color: white;
+  text-align: center;
+  position: relative;
+  display: inline-block;
+  padding: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 61px;
+  font-size: 30px;
+  line-height: 22px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin: 0 auto;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 10px;
+  text-align: center;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+#fuentes {
+  color:rgb(112, 112, 112);
+  text-align: center;
+  position: relative;
+  display: inline-block;
+  padding: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 100%;
+  font-size: 25px;
+  line-height: 22px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin: 0 auto;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 10px;
+  text-align: center;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+#fuenta {
+  color:rgb(197, 197, 197);
+  text-align: center;
+  position: relative;
+  display: inline-block;
+  padding: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 100%;
+  font-size: 25px;
+  line-height: 22px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin: 0 auto;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 10px;
+  text-align: center;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+#motivo {
+  color:rgb(251, 170, 170);
+  text-align: center;
+  position: relative;
+  display: inline;
+  padding: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 100%;
+  font-size: 20px;
+  line-height: 22px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin: 0 auto;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 10px;
+  text-align: center;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-family: 'Times New Roman', Times, serif;
+
+}
+
+#nombre {
+  color:rgb(253, 240, 182);
+  text-align: center;
+  position: relative;
+  display: inline;
+  padding: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 100%;
+  font-size: 12px;
+  line-height: 22px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin: 0 auto;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 10px;
+  text-align: center;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-family: 'Times New Roman', Times, serif;
+
+}
+#cargo {
+  color:rgb(197, 197, 197);
+  text-align: left;
+  position: relative;
+  display: flex;
+  padding: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 100%;
+  font-size: 12px;
+  line-height: 22px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin: 0 auto;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 10px;
+  /* text-align: center; */
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-style: italic;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+#fecha{
+  color:rgb(255, 255, 255);
+  text-align: left;
+  position: relative;
+  display: flex;
+  padding: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 100%;
+  font-size: 12px;
+  line-height: 22px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin: 0 auto;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 10px;
+  /* text-align: center; */
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  text-transform: uppercase;
+  /* font-style: italic; */
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.font{
+  color: rgb(112, 112, 112);
+  text-align: center;
+  position: relative;
+  display: inline-block;
+  padding: 0;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  width: 100px;
+  font-size: 10px;
+  line-height: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin: 0 auto;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 10px;
+  text-align: center;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.nav{
+  /* width: 100px; */
+  position: relative;
+  /* display:  inline-table; */
+  display: flex;
+ justify-content: center;
+
+}
+
+.nav-item{
+
+  
+}
+
+p{
+ position: relative;
+ display: inline-flex;
+ align-items: center;
+ text-align: center;
+}
+
+body{
+    background-color:#f5f5f5;
+
+}
+
+fieldset 
+{
+    margin: 0;
+    xmin-width: 0;
+    padding: 10px;       
+    position: relative;
+    border: 0px;
+    border-radius:4px;
+    background-color:#f5f5f5;
+    padding-left:10px!important;
+}	
+
