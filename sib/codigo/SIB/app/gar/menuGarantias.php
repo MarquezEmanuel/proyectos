@@ -1,0 +1,98 @@
+<?php
+include_once '../conf/Constants.php';
+include_once '../conf/Log.php';
+include_once '../conf/BDConexion.php';
+
+/* BUSCA EL ROL PARA EL USUARIO GUARDADO EN LA SESION */
+
+$usuario = $_SESSION['legajo'];
+$sql = "SELECT nombre FROM rol WHERE id_rol = " . $_SESSION['idrol'];
+$resultadoRol = sqlsrv_query(BDConexion::getInstancia()->getConexion(), $sql);
+
+if (!$resultadoRol) {
+    $log = new Log();
+    $log->writeLine("[No se pudo obtener el nombre del rol][QUERY: $sql][USUARIO: $usuario]");
+    $_SESSION['mensajeLogin'] = "<div class='alert-danger text-center' role='alert'>No se obtuvo información asociada al rol para cargar menu de garantias</div>";
+    header("Location: ../../index.php");
+}
+
+$row = sqlsrv_fetch_array($resultadoRol);
+$nombreRol = $row["nombre"];
+
+if ($nombreRol != "NORMAL" && $nombreRol != "CONSULTA") {
+    $log = new Log();
+    $log->writeLine("[Se intento acceder al menu con otro rol][USUARIO: $usuario]");
+    $_SESSION['mensajeLogin'] = "<div class='alert-danger text-center' role='alert'>No puede acceder al menu solicitado</div>";
+    header("Location: ../../index.php");
+}
+
+$query = "SELECT p.nombre nombre FROM rol_permiso rp, permiso p WHERE rp.id_permiso = p.id_permiso AND rp.id_rol=" . $_SESSION['idrol'];
+$resultPermisos = sqlsrv_query(BDConexion::getInstancia()->getConexion(), $query);
+
+if (!$resultPermisos || !sqlsrv_has_rows($resultPermisos)) {
+    $_SESSION['mensajeLogin'] = "<div class='alert-danger text-center' role='alert'>No se obtuvieron los permisos asociados al usuario</div>";
+    header("Location: ../../index.php");
+}
+?>
+<html id="html">
+    <head>
+        <meta charset="UTF-8">
+        <title> SIB - GARANTIAS </title>
+        <link rel="icon" href="../../lib/img/estrella.jpg" type="image/gif" sizes="16x16">
+        <link rel="stylesheet" href="../../lib/css/estilos.css"/>
+        <link rel="stylesheet" href="../../lib/css/bootstrap/bootstrap.css"/>
+        <link rel="stylesheet" href="../../lib/css/datatables/jquery.dataTables.css">
+        <link rel="stylesheet" href="../../lib/css/datatables/jquery.dataTables.min.css">
+        <link rel="stylesheet" href="../../lib/css/buttons.dataTables.min.css">
+        <script type="text/javascript" charset="utf8" src="../../lib/JQuery/jquery-3.3.1.js"></script>
+        <script type="text/javascript" charset="utf8" src="../../lib/js/datatables/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" charset="utf8" src="../../lib/js/bootstrap/bootstrap.min.js"></script>
+        <script type="text/javascript" charset="utf8" src="../../lib/js/dataTables.buttons.min.js"></script>
+        <script type="text/javascript" charset="utf8" src="../../lib/js/jszip.min.js"></script>
+        <script type="text/javascript" charset="utf8" src="../../lib/js/pdfmake.min.js"></script>
+        <script type="text/javascript" charset="utf8" src="../../lib/js/vfs_fonts.js"></script>
+        <script type="text/javascript" charset="utf8" src="../../lib/js/buttons.flash.min.js"></script>
+        <script type="text/javascript" charset="utf8" src="../../lib/js/buttons.html5.min.js"></script>
+        <script type="text/javascript" charset="utf8" src="../../lib/js/buttons.print.min.js"></script>
+    </head>
+    <body id="body">
+    <navbar id="menu-horizontal" class="navbar-bsc navbar navbar-expand-lg " style="background-color: #024d85;">
+        <a class="navbar-brand" href="inicioGarantias.php">
+            <span><a href="inicioGarantias.php"><img src="../../lib/img/logoBSCTrans.png" class="img-thumbnail" alt="Responsive image"></a></span>
+        </a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto" >
+                    <?php
+                    while ($row = sqlsrv_fetch_array($resultPermisos, SQLSRV_FETCH_ASSOC)) {
+                        if ($row['nombre'] == "GESTIONAR GARANTIAS") {
+                            echo '
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle " href="#" id="navbarDropdown" style="color: white;" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Garantias </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="formBuscarGarantia.php">Buscar garantias</a>
+                                        <a class="dropdown-item" href="formBuscarEstados.php">Buscar estados</a>
+                                        <a class="dropdown-item" href="formCargarGarantia.php">Cargar</a>
+                                    </div>
+                                </li>';
+                        }
+                        if ($row['nombre'] == "CONSULTAR GARANTIAS") {
+                            echo '
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle " href="#" id="navbarDropdown" style="color: white;" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Garantias </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="formConsultarGarantia.php">Consultar</a>
+                                    </div>
+                                </li>';
+                        }
+                    }
+                    ?>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="text" value="Usuario: <?= $_SESSION['legajo'] ?>" readonly>
+                    <input class="form-control mr-sm-2" type="text" value="<?= $nombreRol; ?>" readonly>
+                    <a href="../procesarLogout.php"><input type="button" class="btn btn-secondary my-2 my-sm-0" value="Salir"></a>
+                </form>
+            </div>
+        </div>
+    </navbar> 

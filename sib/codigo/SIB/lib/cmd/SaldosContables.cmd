@@ -1,0 +1,1 @@
+"C:\Program Files (x86)\PHP\v5.6\php.exe" -f "D:\Aplica\SIB\lib\cmd\procesarLecturaSaldos.php" >> D:\Aplica\SIB\logs\saldosContables.log
