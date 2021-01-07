@@ -1,0 +1,3 @@
+com\example\demo\DemoApplication.class
+com\example\demo\repository\ProductoRepository.class
+com\example\demo\entity\Producto.class
