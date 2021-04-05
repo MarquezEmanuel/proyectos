@@ -84,6 +84,22 @@ class RepositorioUsuario():
             mensaje = 'Error al obtener la información del usuario ({})'.format(legajo)
             return Resultado(Constantes.CODES['ERR'], mensaje, repr(error))
 
+    # Obtiene la cantidad de accesos que tiene el usuario en un determinado sistema
+    # legajo: Numero de legajo del usuario
+    # idSistema: Identificador del sistema
+    # Retorna un objeto de tipo Resultado
+
+    def getUsuarioAcceso(self, legajo, idSistema):
+        try:
+            query = 'SELECT contador FROM usuario_acceso WHERE idUsuario = ? AND idSistema=?'
+            row = self.conexion.get(query, [legajo, idSistema])
+            if(row is not None and len(row) > 0):
+                return Resultado(Constantes.CODES['SUC'], '', row[0])
+            else:
+                return Resultado(Constantes.CODES['WAR'], 'No se encontraron resultados para el usuario', None)
+        except Exception as error:
+            return Resultado(Constantes.CODES['ERROR'], 'Error al consultar información de acceso del usuario', repr(error))
+
     # Devuelve un listado de todos los usuarios ordenados por id
     # Retorna un objeto Resultado
 
@@ -135,6 +151,26 @@ class RepositorioUsuario():
             else:
                 return Resultado(Constantes.CODES['ERR'], 'Error al crear usuario', repr(error))
 
+    # Agrega un nuevo acceso de un usuario a un sistema
+    # legajo: Numero de legajo del usuario
+    # idSistema: Identificador del sistema
+
+    def insertUsuarioAcceso(self, legajo, idSistema):
+        try:
+            query = 'INSERT INTO usuario_acceso (idUsuario, idSistema, contador) VALUES (?, ?, ?)'
+            datos = [legajo, idSistema, 1]
+            count =  self.conexion.insert(query, datos)
+            if(count > 0):
+                return Resultado(Constantes.CODES['SUC'], 'Se registró el acceso al sistema correctamente', None)
+            else:
+                return Resultado(Constantes.CODES['WAR'], 'No se realizó el registro de acceso al sistema', None)
+        except Exception as error:
+            if(error.args[0] == Constantes.SQL['DUPLICATE']):
+                return Resultado(Constantes.CODES['WAR'], 'No se pueden crear registros de acceso duplicados', repr(error))
+            else:
+                return Resultado(Constantes.CODES['ERROR'], 'Error al crear registro de acceso', repr(error))
+    
+
     # Relaciona un usuario a multiples perfiles
     # idUsuario: Legajo de usuario
     # perfiles: Listado de identificadores de perfiles
@@ -177,3 +213,21 @@ class RepositorioUsuario():
                 return Resultado(Constantes.CODES['WAR'], mensaje, None)
         except Exception as error:
             return Resultado(Constantes.CODES['ERR'], 'Error al modificar información del usuario', repr(error))
+
+    # Incrementa en uno el contador de accesos al sistema para el usuario
+    # idUsuario: Numero de legajo del usuario
+    # idSistema: Identificador del sistema
+
+    def updateContadorAcceso(self, legajo, idSistema):
+        try:
+            query = 'UPDATE log_acceso SET contador = contador + 1 WHERE idUsuario=? AND idSistema=?'
+            datos = [legajo, idSistema]
+            count = self.conexion.update(query, datos)
+            if(count > 0):
+                return Resultado(Constantes.CODES['SUC'], 'Se registró nuevo acceso', None)
+            else:
+                return Resultado(Constantes.CODES['WAR'], 'No se realizó el registro de acceso al sistema', None)
+        except Exception as error:
+            return Resultado(Constantes.CODES['ERROR'], 'Error al actualizar registro de acceso', repr(error))
+
+    

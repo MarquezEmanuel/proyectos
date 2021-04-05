@@ -1,9 +1,8 @@
 from cerberus import Validator
-from model.Resultado import Resultado
-from repository.SQLServer import SQLServer
-from repository.RepositorioLogAcceso import RepositorioLogAcceso
-from static.Schemas import LOG_ACCESO_SCHEMA
-import static.Constantes as Constantes
+from app.model.Resultado import Resultado
+from app.repository.SQLServer import SQLServer
+from app.repository.RepositorioLogAcceso import RepositorioLogAcceso
+import app.static.Constantes as Constantes
 
 class ControladorLogAcceso():
 
