@@ -78,6 +78,11 @@ class ServicioUsuario(Servicio):
         self._finalizarTransaccion(True)
         return resultado01
 
+    def insertUsuarioAcceso(self, legajo, idSistema):
+        resultado = self.insertUsuarioAcceso(legajo, idSistema)
+        self._guardarLog(resultado)
+        return resultado
+
     # Realiza el login del usuario
     # Retorna un objeto Resultado
 

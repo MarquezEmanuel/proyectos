@@ -1,7 +1,7 @@
-from repository.SQLServer import SQLServer
-from repository.repositorioPerfil import RepositorioPerfil
-from repository.repositorioPermiso import RepositorioPermiso
-from repository.repositorioLog import RepositorioLog
+from app.repository.SQLServer import SQLServer
+from app.repository.RepositorioPerfil import RepositorioPerfil
+from app.repository.RepositorioPermiso import RepositorioPermiso
+from app.repository.RepositorioLog import RepositorioLog
 
 # Controlador de perfiles
 # Controla los eventos del perfil

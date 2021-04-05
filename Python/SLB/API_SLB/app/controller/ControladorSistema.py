@@ -1,8 +1,8 @@
 from cerberus import Validator
-from model.Resultado import Resultado
-from service.ServicioSistema import ServicioSistema
+from app.model.Resultado import Resultado
+from app.service.ServicioSistema import ServicioSistema
 
-import static.Constantes as Constantes
+import app.static.Constantes as Constantes
 
 class ControladorSistema():
 

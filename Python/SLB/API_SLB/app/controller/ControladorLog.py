@@ -1,5 +1,5 @@
 
-from repository.RepositorioLog import RepositorioLog
+from app.repository.RepositorioLog import RepositorioLog
 
 class ControladorLog:
 

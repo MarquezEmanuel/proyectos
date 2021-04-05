@@ -45,6 +45,10 @@ DATA_LDAP = {
     }
 }
 
+# Datos de autenticacion basica con el API
+
+DATA_API = {'BSC_DESARROLLO': 'bWJvcnRCMlMvNlpHTS91Z2tacnRvZz09Ojodk4/3agCtWbb5C+yY6AkE'}
+
 # Datos de onfiguracion para JSON Web Token
 
 DATA_JWT = {

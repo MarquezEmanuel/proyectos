@@ -1,6 +1,6 @@
 
-from repository.RepositorioLog import RepositorioLog
-from repository.RepositorioPermiso import RepositorioPermiso
+from app.repository.RepositorioLog import RepositorioLog
+from app.repository.RepositorioPermiso import RepositorioPermiso
 
 class ServicioPermiso:
 
