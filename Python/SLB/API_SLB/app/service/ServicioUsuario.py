@@ -1,6 +1,7 @@
 from app.service.Servicio import Servicio
 from app.repository.RepositorioLDAP import RepositorioLDAP
 from app.repository.RepositorioPerfil import RepositorioPerfil
+from app.repository.RepositorioPermiso import RepositorioPermiso
 from app.repository.RepositorioUsuario import RepositorioUsuario
 from conf.config import DATA_JWT
 from datetime import datetime, timedelta
@@ -45,6 +46,26 @@ class ServicioUsuario(Servicio):
         resultado01.datos.update({'perfiles': resultado02.datos})
         return resultado01
 
+    def getUsuarioSistema(self, legajo, codigoSistema):
+        resultado01 = self.repoUsuario.getUsuario(legajo)
+        if resultado01.esValido() is False:
+            self._guardarLog(resultado01)
+            return resultado01
+        resultado02 = self.repoPerfil.getPerfilPorUsuarioSistema(legajo, codigoSistema)
+        if resultado02.esValido() is False:
+            self._guardarLog(resultado02)
+            return resultado02
+        repoPermiso = RepositorioPermiso()
+        idPerfil = resultado02.datos['id']
+        resultado03 = repoPermiso.getPermisosPorPerfil(idPerfil)
+        if resultado03.esError():
+            self._guardarLog(resultado03)
+            return resultado03
+        resultado02.datos.update({'permisos': resultado03.datos})
+        resultado01.datos.update({'perfil': resultado02.datos})
+        return resultado01
+
+
     # Devuelve un listado de todos los usuarios ordenados por id
     # Retorna un objeto Resultado
 
@@ -63,9 +84,9 @@ class ServicioUsuario(Servicio):
     # perfiles: Listado de perfiles asociados al usuario
     # Retorna un objeto Resultado
 
-    def insertUsuario(self, legajo, apellido, nombre, esAdministrador, idInvGate, perfiles):
+    def insertUsuario(self, legajo, apellido, nombre, imagen, esAdministrador, idInvGate, perfiles):
         self._iniciarTransaccion()
-        resultado01 = self.repoUsuario.insertUsuario(legajo, apellido, nombre, esAdministrador, idInvGate)
+        resultado01 = self.repoUsuario.insertUsuario(legajo, apellido, nombre, imagen, esAdministrador, idInvGate)
         if resultado01.esValido() is False:
             self._finalizarTransaccion(False)
             self._guardarLog(resultado01)
@@ -79,7 +100,14 @@ class ServicioUsuario(Servicio):
         return resultado01
 
     def insertUsuarioAcceso(self, legajo, idSistema):
-        resultado = self.insertUsuarioAcceso(legajo, idSistema)
+        resultado01 = self.repoUsuario.getUsuarioAcceso(legajo, idSistema)
+        if resultado01.esError():
+            return resultado01
+        if resultado01.esValido():
+            resultado = self.repoUsuario.updateContadorAcceso(legajo, idSistema)
+            self._guardarLog(resultado)
+            return resultado
+        resultado = self.repoUsuario.insertUsuarioAcceso(legajo, idSistema)
         self._guardarLog(resultado)
         return resultado
 

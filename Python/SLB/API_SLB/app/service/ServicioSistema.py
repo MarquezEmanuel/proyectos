@@ -45,9 +45,7 @@ class ServicioSistema(Servicio):
 
     def getSistemasFrecuentesUsuario(self, idUsuario):
         resultado = self.repoSistema.getSistemasFrecuentesUsuario(idUsuario)
-        if(resultado.error()):
-            self.repoLog.error(resultado.mensaje)
-            self.repoLog.error(resultado.datos)
+        self._guardarLog(resultado)
         return resultado
 
     # Agrega un nuevo sistema
@@ -76,7 +74,7 @@ class ServicioSistema(Servicio):
     # id: Identificador del sistema
     # Retorna un objeto Resultado
     
-    def update(self, nombreCorto, nombreLargo, descripcion, URLProduccion, URLTest, imagen, estado, codigo, id):
-        resultado = self.repoSistema.update(nombreCorto, nombreLargo, descripcion, URLProduccion, URLTest, imagen, estado, id)
+    def updateSistema(self, nombreCorto, nombreLargo, descripcion, URLProduccion, URLTest, imagen, estado, codigo, id):
+        resultado = self.repoSistema.updateSistema(nombreCorto, nombreLargo, descripcion, URLProduccion, URLTest, imagen, estado, codigo, id)
         self._guardarLogs([resultado])
         return resultado

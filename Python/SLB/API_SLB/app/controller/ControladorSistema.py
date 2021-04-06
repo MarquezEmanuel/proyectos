@@ -1,7 +1,6 @@
 from cerberus import Validator
 from app.model.Resultado import Resultado
 from app.service.ServicioSistema import ServicioSistema
-
 import app.static.Constantes as Constantes
 
 class ControladorSistema():
@@ -13,11 +12,10 @@ class ControladorSistema():
     # id: Identificador del sistema
     # Retorna un objeto Resultado
 
-    def get(self, id):
+    def getSistema(self, id):
         if id is not None and id > 0:
-            resultado = self.servicioSistema.get(id)
-            return resultado
-        return Resultado(Constantes.CODE_ERROR, 'Los datos recibidos son incorrectos para obtener sistema', id)
+            return self.servicioSistema.getSistema(id)
+        return Resultado(Constantes.CODES['ERR'], 'Los datos recibidos son incorrectos para obtener sistema', id)
 
     # Devuelve un listado de todos los sistemas ordenados por su nombre corto
     # Retorna un objeto Resultado
@@ -34,13 +32,13 @@ class ControladorSistema():
         if idUsuario is not None:
             resultado = self.servicioSistema.getSistemasFrecuentesUsuario(idUsuario)
             return resultado
-        return Resultado(Constantes.CODE_ERROR, 'Los datos recibidos son incorrectos para listar sistemas de uso frecuente', idUsuario)
+        return Resultado(Constantes.CODES['ERR'], 'Los datos recibidos son incorrectos para listar sistemas de uso frecuente', idUsuario)
 
     # Agrega un nuevo sistema
     # Retorna un objeto Resultado
 
-    def insert(self, data):
-        validador = Validator(SISTEMA_SCHEMA)
+    def insertSistema(self, data):
+        validador = Validator(Constantes.BD_SLB['SISTEMA'])
         if validador.validate(data):
             nombreCorto = data['nombreCorto']
             nombreLargo = data['nombreLargo']
@@ -49,6 +47,21 @@ class ControladorSistema():
             test = data['URLTest']
             imagen = data['imagen']
             estado = data['estado']
-            resultado = self.servicioSistema.insert(nombreCorto, nombreLargo, descripcion, produccion, test, imagen, estado)
-            return resultado
-        return Resultado(Constantes.CODE_ERROR, 'Los datos recibidos son incorrectos para crear sistema', data)
+            codigo = data['codigo']
+            return self.servicioSistema.insert(nombreCorto, nombreLargo, descripcion, produccion, test, imagen, estado, codigo) 
+        return Resultado(Constantes.CODES['ERR'], 'Los datos recibidos son incorrectos para crear sistema', data)
+
+    def updateSistema(self, data):
+        validador = Validator(Constantes.BD_SLB['SISTEMA'])
+        if data is not None and validador.validate(data):
+            id = data['id']
+            nombreCorto = data['nombreCorto']
+            nombreLargo = data['nombreLargo']
+            descripcion = data['descripcion']
+            URLProduccion = data['URLProduccion']
+            URLTest = data['URLTest']
+            imagen = data['imagen']
+            estado = data['estado']
+            codigo = data['codigo']
+            return self.servicioSistema.updateSistema(nombreCorto, nombreLargo, descripcion, URLProduccion, URLTest, imagen, estado, codigo, id) 
+        return Resultado(Constantes.CODES['ERR'], 'Los datos recibidos son incorrectos para actualizar sistema', data)

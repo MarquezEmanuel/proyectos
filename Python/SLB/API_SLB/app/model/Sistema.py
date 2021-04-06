@@ -2,7 +2,7 @@
 
 class Sistema:
 
-    def __init__(self, id, nombreCorto, nombreLargo, descripcion, URLProduccion, URLTest, imagen, estado):
+    def __init__(self, id, nombreCorto, nombreLargo, descripcion, URLProduccion, URLTest, imagen, estado, codigo):
         self.id = id
         self.nombreCorto = nombreCorto
         self.nombreLargo = nombreLargo
@@ -10,7 +10,8 @@ class Sistema:
         self.URLProduccion = URLProduccion
         self.URLTest = URLTest
         self.imagen = imagen
-        self.estado = estado   
+        self.estado = estado  
+        self.codigo = codigo 
 
     
 
@@ -24,6 +25,7 @@ class Sistema:
             'URLProduccion': self.URLProduccion,
             'URLTest': self.URLTest,
             'imagen': self.imagen,
-            'estado': self.estado
+            'estado': self.estado,
+            'codigo': self.codigo
         }
         return json

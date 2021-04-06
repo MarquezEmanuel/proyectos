@@ -55,7 +55,7 @@ class ServicioPerfil(Servicio):
 
     def getPerfilesPorSistema(self, idSistema):
         resultado = self.repoPerfil.getPerfilesPorSistema(idSistema)
-        self._guardarLogs([resultado])
+        self._guardarLog(resultado)
         return resultado
 
     # Agrega un nuevo perfil a un determinado sistema

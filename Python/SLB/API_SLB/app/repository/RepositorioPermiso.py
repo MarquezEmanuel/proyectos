@@ -57,7 +57,7 @@ class RepositorioPermiso():
             if (datos is not None and len(datos) > 0):
                 for row in datos:
                     resultado = self.getSubPermisos(row[0])
-                    if(resultado.error()):
+                    if(resultado.esError()):
                         return resultado
                     permiso = Permiso(row[0], row[1], row[2], row[3], resultado.datos)
                     permisos.append(permiso.toJSON())

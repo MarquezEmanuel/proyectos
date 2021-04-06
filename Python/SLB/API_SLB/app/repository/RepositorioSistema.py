@@ -91,7 +91,7 @@ class RepositorioSistema():
         try:
             query = 'SELECT s.id, s.nombreCorto, s.nombreLargo, s.descripcion, s.URLProduccion, s.URLTest, s.imagen, s.estado, s.codigo, (case when a.contador is null then 0 else a.contador end) totalAccesos, p.nombre perfil '
             query += 'FROM sistema s '
-            query += 'LEFT JOIN log_acceso a on a.idSistema = s.id and a.idUsuario = ? '
+            query += 'LEFT JOIN usuario_acceso a on a.idSistema = s.id and a.idUsuario = ? '
             query += 'LEFT JOIN usuario_perfil up on up.idUsuario = a.idUsuario '
             query += 'LEFT JOIN perfil p on up.idPerfil = p.id and p.idSistema = s.id '
             query += 'ORDER BY a.contador desc, nombreCorto'
@@ -127,7 +127,7 @@ class RepositorioSistema():
 
     def insert(self, nombreCorto, nombreLargo, descripcion, URLProduccion, URLTest, imagen, estado, codigo):
         try:
-            query = 'INSERT INTO sistema (nombreCorto, nombreLargo, descripcion, URLProduccion, URLTest, imagen, estado, codigo) OUTPUT inserted.id VALUES (?, ?, ?, ?, ?, ?, ?)'
+            query = 'INSERT INTO sistema (nombreCorto, nombreLargo, descripcion, URLProduccion, URLTest, imagen, estado, codigo) OUTPUT inserted.id VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
             datos = [nombreCorto.strip(), nombreLargo.strip(), descripcion.strip(), URLProduccion.strip(), URLTest, imagen, estado, codigo]
             identificador = self.conexion.insertWithId(query, datos)
             if(identificador > 0):
@@ -154,11 +154,10 @@ class RepositorioSistema():
     # id: Identificador del sistema
     # Retorna un objeto Resultado
 
-    def update(self, nombreCorto, nombreLargo, descripcion, URLProduccion, URLTest, imagen, estado, codigo, id):
+    def updateSistema(self, nombreCorto, nombreLargo, descripcion, URLProduccion, URLTest, imagen, estado, codigo, id):
         try:
             query = 'UPDATE sistema SET nombreCorto=?, nombreLargo=?, descripcion=?, URLProduccion=?, URLTest=?, imagen=?, estado=?, codigo=? WHERE id = ?'
-            datos = [nombreCorto.strip(), nombreLargo.strip(), descripcion.strip(),
-                     URLProduccion.strip(), URLTest, imagen, estado, id]
+            datos = [nombreCorto.strip(), nombreLargo.strip(), descripcion.strip(),URLProduccion.strip(), URLTest, imagen, estado, codigo, id]
             count = self.conexion.update(query, datos)
             if(count > 0):
                 mensaje = 'Se modificó el sistema correctamente ({})'.format(nombreCorto)

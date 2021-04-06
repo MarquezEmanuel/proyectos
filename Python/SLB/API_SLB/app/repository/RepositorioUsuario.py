@@ -132,12 +132,11 @@ class RepositorioUsuario():
     # Nombre: Nombre de usuario
     # Retorna un objeto Resultado
 
-    def insertUsuario(self, legajo, apellido, nombre, esAdministrador, idInvGate):
+    def insertUsuario(self, legajo, apellido, nombre, imagen, esAdministrador, idInvGate):
         try:
             query = 'INSERT INTO usuario (id, apellido, nombre, imagen, marcaAdministrador, idInvGate, fechaCreacion, fechaEdicion) '
             query += 'VALUES (?, ?, ?, ?, ?, ?, GETDATE(), NULL)'
-            count = self.conexion.insert(query, [legajo.strip(), apellido.strip(
-            ), nombre.strip(), 'default', esAdministrador, idInvGate])
+            count = self.conexion.insert(query, [legajo.strip(), apellido.strip(), nombre.strip(), imagen, esAdministrador, idInvGate])
             if(count > 0):
                 mensaje = 'Se creó el usuario correctamente ({}, {})'.format(apellido, nombre)
                 return Resultado(Constantes.CODES['SUC'], mensaje, None)
@@ -220,7 +219,7 @@ class RepositorioUsuario():
 
     def updateContadorAcceso(self, legajo, idSistema):
         try:
-            query = 'UPDATE log_acceso SET contador = contador + 1 WHERE idUsuario=? AND idSistema=?'
+            query = 'UPDATE usuario_acceso SET contador = contador + 1 WHERE idUsuario=? AND idSistema=?'
             datos = [legajo, idSistema]
             count = self.conexion.update(query, datos)
             if(count > 0):
@@ -228,6 +227,6 @@ class RepositorioUsuario():
             else:
                 return Resultado(Constantes.CODES['WAR'], 'No se realizó el registro de acceso al sistema', None)
         except Exception as error:
-            return Resultado(Constantes.CODES['ERROR'], 'Error al actualizar registro de acceso', repr(error))
+            return Resultado(Constantes.CODES['ERR'], 'Error al actualizar registro de acceso', repr(error))
 
     

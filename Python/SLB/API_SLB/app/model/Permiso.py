@@ -8,7 +8,7 @@ class Permiso:
         self.link = link
         self.subpermisos = subpermisos
 
-    def toJSON():
+    def toJSON(self):
         json = {'id': self.id,
                 'titulo': self.titulo,
                 'descripcion': self.descripcion,

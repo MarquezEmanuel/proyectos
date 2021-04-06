@@ -113,6 +113,28 @@ class RepositorioPerfil():
             mensaje = 'Error al consultar perfiles del usuario ({})'.format(idUsuario)
             return Resultado(Constantes.CODES['ERR'], mensaje, repr(error))
 
+    # Obtiene la informacion del perfil para un determinado usuario en un determinado sistema
+    # idUsuario: Numero de legajo del usuario
+    # codigoSistema: Codigo del sistema
+    # Retorna un objeto de tipo Resultado
+
+    def getPerfilPorUsuarioSistema(self, idUsuario, codigoSistema):
+        try:
+            query = 'SELECT p.id, p.idSistema, p.nombre, p.descripcion, p.estado, FORMAT(p.fechaCreacion, ?), FORMAT(p.fechaEdicion, ?) '
+            query += 'FROM perfil p INNER JOIN usuario_perfil up ON up.idPerfil = p.id '
+            query += 'INNER JOIN sistema s ON p.idSistema = s.id WHERE up.idUsuario = ? AND s.codigo = ?'
+            row = self.conexion.get(query, [self.formatoFecha, self.formatoFecha, idUsuario, codigoSistema])
+            perfiles = []
+            if(row is not None and len(row) > 0):
+                perfil = Perfil(row[0], row[1], row[2], row[3], row[4], row[5], row[6])
+                return Resultado(Constantes.CODES['SUC'], '', perfil.toJSON())
+            else:
+                mensaje = 'No se encontraron perfiles para el usuario ({})'.format(idUsuario)
+                return Resultado(Constantes.CODES['WAR'], mensaje, perfiles)
+        except Exception as error:
+            mensaje = 'Error al consultar perfiles del usuario ({})'.format(idUsuario)
+            return Resultado(Constantes.CODES['ERR'], mensaje, repr(error))
+
     # Agrega un nuevo perfil a un determinado sistema
     # idSistema: Identificador del sistema al que pertenece
     # nombre: Nombre del nuevo perfil

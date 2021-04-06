@@ -1,7 +1,7 @@
-from app.repository.SQLServer import SQLServer
-from app.repository.RepositorioPerfil import RepositorioPerfil
-from app.repository.RepositorioPermiso import RepositorioPermiso
-from app.repository.RepositorioLog import RepositorioLog
+from cerberus import Validator
+from app.service.ServicioPerfil import ServicioPerfil
+from app.model.Resultado import Resultado
+import app.static.Constantes as Constantes
 
 # Controlador de perfiles
 # Controla los eventos del perfil
@@ -9,14 +9,40 @@ from app.repository.RepositorioLog import RepositorioLog
 # Autor: Aguero Emiliano
 # Autor: Farinola Santiago
 # Autor: Marquez Emanuel
+
 class ControladorPerfil():
 
     # Constructor de clase
+
     def __init__(self):
-        self.conexion = SQLServer()
-        self.repositorioPerfil = RepositorioPerfil(self.conexion)
-        self.repositorioPermiso = RepositorioPermiso(self.conexion)
-        self.repositorioLog = RepositorioLog(self.conexion)
+        self.servicioPerfil = ServicioPerfil()
+
+    # Elimina un determinado perfil y los permisos que posee asociados
+    # id: Identificador del perfil
+    # Retorna un objeto de tipo Resultado
+
+    def deletePerfil(self, id):
+        if id is not None and id > 0:
+            return self.servicioPerfil.deletePerfil(id)
+        return Resultado(Constantes.CODES['ERR'], 'El identificador recibido es incorrecto para eliminar perfil', id)
+
+    # Obtiene la informacion de un perfil
+    # id: Identificador del perfil
+    # Retorna un objeto Resultado
+
+    def getPerfil(self, id):
+        if id is not None and id > 0:
+            return self.servicioPerfil.getPerfil(id)
+        return Resultado(Constantes.CODES['ERR'], 'El identificador recibido es incorrecto para eliminar perfil', id)
+
+    # Devuelve un listado de los perfiles de un determinado sistema ordenados por nombre
+    # idSistema: Identificador del sistema a consultar
+    # Retorna un objeto Resultado
+
+    def getPerfilesPorSistema(self, idSistema):
+        if idSistema is not None and idSistema > 0:
+            return self.servicioPerfil.getPerfilesPorSistema(idSistema)
+        return Resultado(Constantes.CODES['ERR'], 'El identificador recibido es incorrecto para obtener perfiles del sistema', id)
 
     # Agrega un nuevo perfil a un determinado sistema
     # idSistema: Identificador del sistema al que pertenece
@@ -24,42 +50,33 @@ class ControladorPerfil():
     # descripcion: Descripcion del perfil
     # permisos: Listado de identificadores de permisos
     # Retorna un objeto Resultado
-    def crear(self, idSistema, nombre, descripcion, permisos):
-        self.conexion.autoCommit(False)
-        resultado01 = self.repositorioPerfil.crear(idSistema, nombre, descripcion)
-        if(resultado01.valido()):
-            idPerfil = resultado01.datos
-            resultado02 = self.repositorioPerfil.asociarPerfilPermiso(idPerfil, permisos)
-            if(resultado02.valido()):
-                self.conexion.commit()
-                self.conexion.autoCommit(True)
-                return resultado01
-            resultado01 = resultado02
-        self.conexion.rollback()
-        self.conexion.autoCommit(True)
-        self.repositorioLog.errorMultiple(self.conexion.logs)
-        return resultado01
 
-    # Devuelve un listado de los perfiles de un determinado sistema ordenados por nombre
-    # idSistema: Identificador del sistema a consultar
-    # Retorna un objeto Resultado
-    def listarPerfilesPorSistema(self, idSistema):
-        resultado = self.repositorioPerfil.listarPerfilesPorSistema(idSistema)
-        if(resultado.valido() == False):
-            self.repositorioLog.errorMultiple(self.conexion.logs)
-        return resultado
+    def insertPerfil(self, data):
+        validador = Validator(Constantes.BD_SLB['PERFIL_INSERT'])
+        if data is not None and validador.validate(data):
+            idSistema = data['idSistema']
+            nombre = data['nombre']
+            descripcion = data['descripcion']
+            permisos = data['permisos']
+            return self.servicioPerfil.insertPerfil(idSistema, nombre, descripcion, permisos)
+        return Resultado(Constantes.CODES['ERR'], 'Los datos recibidos son incorrectos para crear perfil', data)
 
-    # Obtiene la informacion de un perfil
-    # id: Identificador del perfil
+    # Modifica los datos de un determinado perfil
+    # Id: Identificador del perfil
+    # Nombre: Nuevo nombre
+    # Descripcion: Nueva descripcion
+    # Estado: Nuevo estado
+    # Permisos: Listado de permisos asociados al perfil
     # Retorna un objeto Resultado
-    def obtener(self, id):
-        resultado01 = self.repositorioPerfil.obtener(id)
-        if(resultado01.valido()):
-            resultado02 = self.repositorioPermiso.listarPermisosPorPerfil(id)
-            if(resultado02.valido()):
-                perfil = resultado01.datos
-                perfil['permisos'] = resultado02.datos
-                return resultado01
-            resultado01 = resultado02
-        self.repositorioLog.errorMultiple(self.conexion.logs)
-        return resultado01
+
+    def updatePerfil(self, data):
+        validador = Validator(Constantes.BD_SLB['PERFIL_UPDATE'])
+        if data is not None and validador.validate(data):
+            id = data['id']
+            nombre = data['nombre']
+            descripcion = data['descripcion']
+            estado = data['estado']
+            permisos = data['permisos']
+            return self.servicioPerfil.updatePerfil(id, nombre, descripcion, estado, permisos)
+        return Resultado(Constantes.CODES['ERR'], 'Los datos recibidos son incorrectos para actualizar perfil', data)
+    
