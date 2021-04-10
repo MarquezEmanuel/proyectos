@@ -5,7 +5,7 @@ from app.model.Encriptador import Encriptador
 import app.static.Constantes as Constantes
 
 enc = Encriptador()
-print(enc.encriptarBase64('CAP'))
+print(enc.encriptarBase64('SLB'))
 print(enc.encriptarBase64('PAPROD'))
 
 
