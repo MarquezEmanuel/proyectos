@@ -1,0 +1,19 @@
+
+Comandos
+
+npx --version
+npx create-react-app nombreAplicacion
+npm start
+
+Estructura de archivos:
+
+- node_modules: Nucleo de Node
+- public: Mantiene los archivos estaticos
+- index.html: Contiene el root y es donde se renderiza la aplicacion
+- robots.txt: Es para los rastreadores del navegador
+- src: Es la carpeta donde se trabaja
+
+YOUTUBE:
+
+- Dorian Desings : https://www.youtube.com/playlist?list=PLROIqh_5RZeDk04YvFLZfHuTuA4q5OOI5
+- Raul Palacion  : https://www.youtube.com/playlist?list=PLIddmSRJEJ0vEBB6ECegg35IQ-sWjSDdo
